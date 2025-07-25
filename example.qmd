@@ -5,4 +5,8 @@ format:
     output-file: index
 ---
 
+```markdown
+{{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#installation >}}}
+```
+
 {{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#installation >}}
