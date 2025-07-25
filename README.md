@@ -1,17 +1,23 @@
-# Repository Template for Quarto Extension
+# External Extension for Quarto
 
-An opinionated repository template for Quarto extension.
+This repository provides an extension for Quarto that allows you to include content from external sources or files into your Quarto documents.
 
-## Installing
+## Installation
 
 ```bash
-quarto add mcanouil/quarto-{{EXTENSION}}
+quarto add mcanouil/quarto-external
 ```
 
 This will install the extension under the `_extensions` subdirectory.
 If you're using version control, you will want to check in this directory.
 
-## Using
+## Usage
+
+To use the external extension, you can include external content or a section from a file into your Quarto document using the `{{< external >}}` shortcode.
+
+```yaml
+{{< external <URL>#<section-id> >}}
+```
 
 ## Example
 
@@ -19,10 +25,4 @@ Here is the source code for a minimal example: [example.qmd](example.qmd).
 
 Outputs of `example.qmd`:
 
-- [HTML](https://m.canouil.dev/quarto-{{EXTENSION}}/)
-- [Typst (PDF)](https://m.canouil.dev/quarto-{{EXTENSION}}/example-typst.pdf)
-- [LaTeX (PDF)](https://m.canouil.dev/quarto-{{EXTENSION}}/example-latex.pdf)
-- [Word (DOCX)](https://m.canouil.dev/quarto-{{EXTENSION}}/example-openxml.docx)
-- [Reveal.js (HTML)](https://m.canouil.dev/quarto-{{EXTENSION}}/example-revealjs.html)
-- [Beamer (PDF)](https://m.canouil.dev/quarto-{{EXTENSION}}/example-beamer.pdf)
-- [PowerPoint (PPTX)](https://m.canouil.dev/quarto-{{EXTENSION}}/example-pptx.pptx)
+- [HTML](https://m.canouil.dev/quarto-external/)
