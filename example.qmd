@@ -3,8 +3,6 @@ title: "Quarto External Extension"
 format:
   html:
     output-file: index
-shortcodes: 
-  - external.lua
 ---
 
-{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md >}}
+{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#installation >}}
