@@ -23,6 +23,21 @@
 ]]
 
 ---
+-- Checks if a file extension is markdown-related.
+--
+-- @param url string The file URL or path.
+-- @return boolean True if markdown-related, false otherwise.
+local function is_markdown_extension(url)
+  local markdown_exts = {".md", ".markdown", ".qmd"}
+  for _, ext in ipairs(markdown_exts) do
+    if url:sub(-#ext):lower() == ext then
+      return true
+    end
+  end
+  return false
+end
+
+---
 -- Includes external content or a section from a file into a Pandoc document.
 --
 -- @param args table Arguments, where the first element is the file URL (optionally with a section id as a hash fragment).
@@ -36,12 +51,19 @@ function include_external(args, kwargs, meta, raw_args, context)
     url = url:sub(1, hash_index - 1)
   end
 
+  if not is_markdown_extension(url) then
+    quarto.log.warning("Only markdown files are supported. The file '" .. url .. "' will not be included.")
+    return pandoc.Null()
+  end
+
   local mt, contents = pandoc.mediabag.fetch(url)
   if not contents then
-    return pandoc.Para{pandoc.Str("Error: Could not open file '" .. url .. "'.")}
+    quarto.log.error("Could not open file '" .. url .. "'. Please check the URL or path.")
+    return pandoc.Null()
   end
 
   local doc = pandoc.read(contents)
+  -- local doc = quarto._quarto.utils.string_to_blocks(contents)
   if section_id then
     local found = false
     local section_level = nil
@@ -59,7 +81,8 @@ function include_external(args, kwargs, meta, raw_args, context)
       end
     end
     if #section_blocks == 0 then
-      return pandoc.Para{pandoc.Str("Error: Section '" .. section_id .. "' not found in '" .. url .. "'.")}
+      quarto.log.error("Section '" .. section_id .. "' not found in '" .. url .. "'.")
+      return pandoc.Null()
     end
     return section_blocks
   end
