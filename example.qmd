@@ -8,7 +8,3 @@ shortcodes:
 ---
 
 {{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md >}}
-
-```lua
-{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/_extensions/external/external.lua >}}
-```
