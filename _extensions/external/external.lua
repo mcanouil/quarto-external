@@ -71,9 +71,9 @@ function include_external(args, kwargs, meta, raw_args, context)
       if block.t == 'Header' and block.identifier == section_id then
         found = true
         section_level = block.level
-        table.insert(section_blocks, block)
-      elseif found then
-        if block.t == 'Header' and block.level <= section_level then
+      end
+      if found then
+        if block.t == 'Header' and block.level <= section_level and #section_blocks > 0 then
           break
         end
         table.insert(section_blocks, block)
@@ -83,7 +83,7 @@ function include_external(args, kwargs, meta, raw_args, context)
       quarto.log.error("Section '" .. section_id .. "' not found in '" .. url .. "'.")
       return pandoc.Null()
     end
-    return section_blocks
+    return pandoc.Blocks(section_blocks)
   end
   return doc
 end
