@@ -62,13 +62,12 @@ function include_external(args, kwargs, meta, raw_args, context)
     return pandoc.Null()
   end
 
-  local doc = pandoc.read(contents)
-  -- local doc = quarto._quarto.utils.string_to_blocks(contents)
+  local doc = quarto.utils.string_to_blocks(contents)
   if section_id then
     local found = false
     local section_level = nil
     local section_blocks = {}
-    for i, block in ipairs(doc.blocks) do
+    for i, block in ipairs(doc) do
       if block.t == 'Header' and block.identifier == section_id then
         found = true
         section_level = block.level
@@ -86,7 +85,7 @@ function include_external(args, kwargs, meta, raw_args, context)
     end
     return section_blocks
   end
-  return doc.blocks
+  return doc
 end
 
 return {
