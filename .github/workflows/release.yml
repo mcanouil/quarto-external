@@ -28,3 +28,6 @@ jobs:
       formats: "html"
       tinytex: false
       quarto: "release"
+      r: false
+      python: false
+      julia: false
