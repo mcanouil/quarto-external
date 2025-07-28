@@ -23,10 +23,10 @@
 ]]
 
 ---
--- Checks if a file extension is markdown-related.
---
--- @param url string The file URL or path.
--- @return boolean True if markdown-related, false otherwise.
+--- Checks if a file extension is markdown-related.
+---
+--- @param url string The file URL or path.
+--- @return boolean True if markdown-related, false otherwise.
 local function is_markdown_extension(url)
   local markdown_exts = {".md", ".markdown", ".qmd"}
   for _, ext in ipairs(markdown_exts) do
@@ -38,10 +38,10 @@ local function is_markdown_extension(url)
 end
 
 ---
--- Includes external content or a section from a file into a Pandoc document.
---
--- @param args table Arguments, where the first element is the file URL (optionally with a section id as a hash fragment).
--- @return table Pandoc blocks of the included content or an error message as a Para block.
+--- Includes external content or a section from a file into a Pandoc document.
+---
+--- @param args table Arguments, where the first element is the file URL (optionally with a section id as a hash fragment).
+--- @return table Pandoc blocks of the included content or an error message as a Para block.
 function include_external(args, kwargs, meta, raw_args, context)
   local url = pandoc.utils.stringify(args[1])
   local section_id = nil
@@ -62,12 +62,12 @@ function include_external(args, kwargs, meta, raw_args, context)
     return pandoc.Null()
   end
 
-  local doc = quarto.utils.string_to_blocks(contents)
+  local contents_blocks = quarto.utils.string_to_blocks(contents)
   if section_id then
     local found = false
     local section_level = nil
     local section_blocks = {}
-    for i, block in ipairs(doc) do
+    for i, block in ipairs(contents_blocks) do
       if block.t == 'Header' and block.identifier == section_id then
         found = true
         section_level = block.level
@@ -85,7 +85,7 @@ function include_external(args, kwargs, meta, raw_args, context)
     end
     return pandoc.Blocks(section_blocks)
   end
-  return doc
+  return contents_blocks
 end
 
 return {
