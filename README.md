@@ -13,9 +13,9 @@ If you're using version control, you will want to check in this directory.
 
 ## Usage
 
-To use the external extension, you can include external content or a section from a file into your Quarto document using the `{{< external >}}` shortcode.
+To use the external extension, you can include external content or a section from a file into your Quarto document using the `external` shortcode.
 
-```yaml
+```{.yaml shortcodes=false}
 {{< external <URL>#<section-id> >}}
 ```
 
