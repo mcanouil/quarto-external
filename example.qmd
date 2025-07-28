@@ -1,5 +1,6 @@
 ---
-title: "Quarto External Extension"
+title: "External"
+subtitle: "Quarto Extension"
 format:
   html:
     output-file: index
