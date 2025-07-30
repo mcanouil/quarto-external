@@ -22,6 +22,8 @@ To use the external extension, you can include external content or a section fro
 > [!IMPORTANT]
 > The `external` shortcode should be on its own line, without any other content on the same line.
 > An empty line before and after the shortcode is required.
+>
+> Currently, only files with `.md`, `.markdown`, and `.qmd` are supported.
 
 ## Example
 
