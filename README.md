@@ -15,7 +15,7 @@ If you're using version control, you will want to check in this directory.
 
 To use the external extension, you can include external content or a section from a file into your Quarto document using the `external` shortcode.
 
-```{.markdown shortcodes=false}
+```markdown
 {{< external <URL>#<section-id> >}}
 ```
 
@@ -24,6 +24,9 @@ To use the external extension, you can include external content or a section fro
 > Include blank lines both before and after the shortcode.
 >
 > Currently supports `.md`, `.markdown`, and `.qmd` files only.
+>
+> - `.md` and `.markdown` files are included as-is.
+> - `.qmd` files are processed as Quarto documents, so you can use Quarto features like citations, cross-references, and math.
 >
 > **Note:** Using external content breaks the fully reproducible and self-contained nature of Quarto projects, as documents become dependent on external sources that may change or become unavailable.
 
