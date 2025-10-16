@@ -63,7 +63,12 @@ function include_external(args, kwargs, meta, raw_args, context)
     return pandoc.Null()
   end
 
-  local contents_blocks = quarto.utils.string_to_blocks(contents)
+  local contents_blocks
+  if url:lower():match('%.qmd$') then
+    contents_blocks = quarto.utils.string_to_blocks(contents)
+  else
+    contents_blocks = pandoc.read(contents).blocks
+  end
   if section_id then
     local found = false
     local section_level = nil
