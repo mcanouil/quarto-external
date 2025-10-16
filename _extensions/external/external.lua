@@ -28,9 +28,10 @@
 --- @param url string The file URL or path.
 --- @return boolean True if markdown-related, false otherwise.
 local function is_markdown_extension(url)
-  local markdown_exts = {".md", ".markdown", ".qmd"}
+  local lower_url = url:lower()
+  local markdown_exts = {'.md', '.markdown', '.qmd'}
   for _, ext in ipairs(markdown_exts) do
-    if url:sub(-#ext):lower() == ext then
+    if lower_url:match('%' .. ext .. '$') then
       return true
     end
   end
