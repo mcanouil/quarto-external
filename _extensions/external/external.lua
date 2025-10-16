@@ -67,7 +67,7 @@ function include_external(args, kwargs, meta, raw_args, context)
   if url:lower():match('%.qmd$') then
     contents_blocks = quarto.utils.string_to_blocks(contents)
   else
-    contents = contents:gsub('({{< external [^}]* >}})', '{%1}')
+    contents = contents:gsub('({{< external .-[ \t]>}})', '{%1}')
     contents_blocks = pandoc.read(contents).blocks
   end
   if section_id then
