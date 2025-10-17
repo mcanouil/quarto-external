@@ -16,8 +16,10 @@ If you're using version control, you will want to check in this directory.
 To use the external extension, you can include external content or a section from a file into your Quarto document using the `external` shortcode.
 
 ```markdown
-{{< external <URL>#<section-id> >}}
+{{< external <URI>#<section-id> >}}
 ```
+
+`<URI>` specifies the location of the external file. This can be a local file path (outside the project directory) or a URL.
 
 > [!IMPORTANT]
 > The `external` shortcode must be placed on its own line with no other content.
