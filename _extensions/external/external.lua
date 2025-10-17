@@ -25,13 +25,13 @@
 ---
 --- Checks if a file extension is markdown-related.
 ---
---- @param url string The file URL or path.
+--- @param uri string The file URI.
 --- @return boolean True if markdown-related, false otherwise.
-local function is_markdown_extension(url)
-  local lower_url = url:lower()
+local function is_markdown_extension(uri)
+  local lower_uri = uri:lower()
   local markdown_exts = {'.md', '.markdown', '.qmd'}
   for _, ext in ipairs(markdown_exts) do
-    if lower_url:match('%' .. ext .. '$') then
+    if lower_uri:match('%' .. ext .. '$') then
       return true
     end
   end
@@ -41,30 +41,30 @@ end
 ---
 --- Includes external content or a section from a file into a Pandoc document.
 ---
---- @param args table Arguments, where the first element is the file URL (optionally with a section id as a hash fragment).
+--- @param args table Arguments, where the first element is the file URI (optionally with a section id as a hash fragment).
 --- @return table Pandoc blocks of the included content or an error message as a Para block.
 function include_external(args, kwargs, meta, raw_args, context)
-  local url = pandoc.utils.stringify(args[1])
+  local uri = pandoc.utils.stringify(args[1])
   local section_id = nil
-  local hash_index = url:find('#')
+  local hash_index = uri:find('#')
   if hash_index then
-    section_id = url:sub(hash_index + 1)
-    url = url:sub(1, hash_index - 1)
+    section_id = uri:sub(hash_index + 1)
+    uri = uri:sub(1, hash_index - 1)
   end
 
-  if not is_markdown_extension(url) then
-    quarto.log.warning("Only markdown files are supported. The file '" .. url .. "' will not be included.")
+  if not is_markdown_extension(uri) then
+    quarto.log.warning("Only markdown files are supported. The file '" .. uri .. "' will not be included.")
     return pandoc.Null()
   end
 
-  local mt, contents = pandoc.mediabag.fetch(url)
+  local mt, contents = pandoc.mediabag.fetch(uri)
   if not contents then
-    quarto.log.error("Could not open file '" .. url .. "'. Please check the URL or path.")
+    quarto.log.error("Could not open file '" .. uri .. "'. Please check the URI.")
     return pandoc.Null()
   end
 
   local contents_blocks
-  if url:lower():match('%.qmd$') then
+  if uri:lower():match('%.qmd$') then
     contents_blocks = quarto.utils.string_to_blocks(contents)
   else
     contents = contents:gsub('({{<.-[ \t]>}})', '{%1}')
@@ -87,7 +87,7 @@ function include_external(args, kwargs, meta, raw_args, context)
       end
     end
     if #section_blocks == 0 then
-      quarto.log.error("Section '" .. section_id .. "' not found in '" .. url .. "'.")
+      quarto.log.error("Section '" .. section_id .. "' not found in '" .. uri .. "'.")
       return pandoc.Null()
     end
     return pandoc.Blocks(section_blocks)
