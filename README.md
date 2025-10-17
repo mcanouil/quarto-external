@@ -25,6 +25,8 @@ To use the external extension, you can include external content or a section fro
 > The `external` shortcode must be placed on its own line with no other content.
 > Include blank lines both before and after the shortcode.
 >
+> No code cells will or can be executed from the included file.
+>
 > Currently supports `.md`, `.markdown`, and `.qmd` files only.
 >
 > - `.md` and `.markdown` files are included as-is.
