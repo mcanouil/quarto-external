@@ -22,13 +22,16 @@
 # SOFTWARE.
 ]]
 
----
 --- Checks if a file extension is markdown-related.
+--- Determines whether a given URI ends with a markdown file extension.
+--- Supported extensions: .md, .markdown, .qmd
 ---
---- @param uri string The file URI.
---- @return boolean True if markdown-related, false otherwise.
+--- @param uri string The file URI to check
+--- @return boolean True if markdown-related, false otherwise
 local function is_markdown_extension(uri)
+  --- @type string URI converted to lowercase for case-insensitive matching
   local lower_uri = uri:lower()
+  --- @type table<integer, string> List of supported markdown file extensions
   local markdown_exts = {'.md', '.markdown', '.qmd'}
   for _, ext in ipairs(markdown_exts) do
     if lower_uri:match('%' .. ext .. '$') then
@@ -38,14 +41,25 @@ local function is_markdown_extension(uri)
   return false
 end
 
----
 --- Includes external content or a section from a file into a Pandoc document.
+--- Supports including entire markdown files or specific sections identified by header IDs.
+--- The URI can contain a hash fragment (#section-id) to include only that section.
+--- For .qmd files, uses Quarto's string_to_blocks parser.
+--- For other markdown files, uses Pandoc's reader with shortcode escaping.
 ---
---- @param args table Arguments, where the first element is the file URI (optionally with a section id as a hash fragment).
---- @return table Pandoc blocks of the included content or an error message as a Para block.
-function include_external(args, kwargs, meta, raw_args, context)
+--- @param args table Arguments array where first element is the file URI (with optional #section-id)
+--- @param _kwargs table Named keyword arguments (unused)
+--- @param _meta table Document metadata (unused)
+--- @param _raw_args table Raw arguments (unused)
+--- @param _context table Context information (unused)
+--- @return table Included content blocks or pandoc.Null() on error
+--- @usage {{< external path/to/file.md#section-id >}}
+function include_external(args, _kwargs, _meta, _raw_args, _context)
+  --- @type string File URI to include
   local uri = pandoc.utils.stringify(args[1])
+  --- @type string|nil Optional section identifier from hash fragment
   local section_id = nil
+  --- @type integer|nil Position of hash character in URI
   local hash_index = uri:find('#')
   if hash_index then
     section_id = uri:sub(hash_index + 1)
@@ -57,12 +71,15 @@ function include_external(args, kwargs, meta, raw_args, context)
     return pandoc.Null()
   end
 
-  local mt, contents = pandoc.mediabag.fetch(uri)
+  --- @type string|nil MIME type of the fetched file (unused but returned by fetch)
+  --- @type string|nil File contents as string
+  local _mt, contents = pandoc.mediabag.fetch(uri)
   if not contents then
     quarto.log.error("Could not open file '" .. uri .. "'. Please check the URI.")
     return pandoc.Null()
   end
 
+  --- @type table Pandoc blocks parsed from file contents
   local contents_blocks
   if uri:lower():match('%.qmd$') then
     contents_blocks = quarto.utils.string_to_blocks(contents)
@@ -71,10 +88,13 @@ function include_external(args, kwargs, meta, raw_args, context)
     contents_blocks = pandoc.read(contents).blocks
   end
   if section_id then
+    --- @type boolean Flag indicating if the target section has been found
     local found = false
+    --- @type integer|nil Header level of the target section
     local section_level = nil
+    --- @type table<integer, table> Blocks belonging to the target section
     local section_blocks = {}
-    for i, block in ipairs(contents_blocks) do
+    for _, block in ipairs(contents_blocks) do
       if block.t == 'Header' and block.identifier == section_id then
         found = true
         section_level = block.level
@@ -95,6 +115,9 @@ function include_external(args, kwargs, meta, raw_args, context)
   return contents_blocks
 end
 
+--- Module export table.
+--- Defines the shortcode available to Quarto for including external content.
+--- @type table<string, function>
 return {
   ['external'] = include_external
 }
