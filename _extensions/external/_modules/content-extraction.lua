@@ -30,8 +30,7 @@
 local content_module = {}
 
 -- Load utils module for raw_header function
-local utils_path = quarto.utils.resolve_path("utils.lua")
-local utils = require(utils_path)
+local utils = require(quarto.utils.resolve_path("utils.lua"):gsub("%.lua$", ""))
 
 -- ============================================================================
 -- SECTION EXTRACTION

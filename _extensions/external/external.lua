@@ -26,12 +26,9 @@
 local EXTENSION_NAME = "external"
 
 --- Load utils, validation and content-extraction modules
-local utils_path = quarto.utils.resolve_path("_modules/utils.lua")
-local utils = require(utils_path)
-local validation_path = quarto.utils.resolve_path("_modules/validation.lua")
-local validation = require(validation_path)
-local content_path = quarto.utils.resolve_path("_modules/content-extraction.lua")
-local content = require(content_path)
+local utils = require(quarto.utils.resolve_path("_modules/utils.lua"):gsub("%.lua$", ""))
+local validation = require(quarto.utils.resolve_path("_modules/validation.lua"):gsub("%.lua$", ""))
+local content = require(quarto.utils.resolve_path("_modules/content-extraction.lua"):gsub("%.lua$", ""))
 
 --- Includes external content or a section from a file into a Pandoc document.
 --- Supports including entire markdown files or specific sections identified by header IDs.
