@@ -22,7 +22,12 @@
 # SOFTWARE.
 ]]
 
---- Load validation and content-extraction modules
+--- Extension name constant
+local EXTENSION_NAME = "external"
+
+--- Load utils, validation and content-extraction modules
+local utils_path = quarto.utils.resolve_path("_modules/utils.lua")
+local utils = require(utils_path)
 local validation_path = quarto.utils.resolve_path("_modules/validation.lua")
 local validation = require(validation_path)
 local content_path = quarto.utils.resolve_path("_modules/content-extraction.lua")
@@ -55,8 +60,9 @@ local function include_external(args, _kwargs, _meta, _raw_args, _context)
 
   -- Use validation module to check markdown extension
   if not validation.is_markdown(uri) then
-    quarto.log.warning(
-      "[external] Only markdown files (.md, .markdown, .qmd) are supported. " ..
+    utils.log_warning(
+      EXTENSION_NAME,
+      "Only markdown files (.md, .markdown, .qmd) are supported. " ..
       "The file '" .. uri .. "' will not be included."
     )
     return pandoc.Null()
@@ -66,8 +72,9 @@ local function include_external(args, _kwargs, _meta, _raw_args, _context)
   --- @type string|nil File contents as string
   local _mt, contents = pandoc.mediabag.fetch(uri)
   if not contents then
-    quarto.log.error(
-      "[external] Could not open file '" .. uri .. "'. " ..
+    utils.log_error(
+      EXTENSION_NAME,
+      "Could not open file '" .. uri .. "'. " ..
       "Please check that the file path is correct and the file is accessible."
     )
     return pandoc.Null()
@@ -86,8 +93,9 @@ local function include_external(args, _kwargs, _meta, _raw_args, _context)
   if section_id then
     local section_blocks = content.extract_section(contents_blocks, section_id, true)
     if section_blocks == nil then
-      quarto.log.error(
-        "[external] Section '#" .. section_id .. "' not found in '" .. uri .. "'. " ..
+      utils.log_error(
+        EXTENSION_NAME,
+        "Section '#" .. section_id .. "' not found in '" .. uri .. "'. " ..
         "Please check that the section identifier matches a header in the file."
       )
       return pandoc.Null()
