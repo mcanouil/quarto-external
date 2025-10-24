@@ -23,12 +23,12 @@
 ]]
 
 --- Extension name constant
-local EXTENSION_NAME = "external"
+local EXTENSION_NAME = 'external'
 
 --- Load utils, validation and content-extraction modules
-local utils = require(quarto.utils.resolve_path("_modules/utils.lua"):gsub("%.lua$", ""))
-local validation = require(quarto.utils.resolve_path("_modules/validation.lua"):gsub("%.lua$", ""))
-local content = require(quarto.utils.resolve_path("_modules/content-extraction.lua"):gsub("%.lua$", ""))
+local utils = require(quarto.utils.resolve_path('_modules/utils.lua'):gsub('%.lua$', ''))
+local validation = require(quarto.utils.resolve_path('_modules/validation.lua'):gsub('%.lua$', ''))
+local content = require(quarto.utils.resolve_path('_modules/content-extraction.lua'):gsub('%.lua$', ''))
 
 --- Includes external content or a section from a file into a Pandoc document.
 --- Supports including entire markdown files or specific sections identified by header IDs.
@@ -59,8 +59,8 @@ local function include_external(args, _kwargs, _meta, _raw_args, _context)
   if not validation.is_markdown(uri) then
     utils.log_warning(
       EXTENSION_NAME,
-      "Only markdown files (.md, .markdown, .qmd) are supported. " ..
-      "The file '" .. uri .. "' will not be included."
+      'Only markdown files (.md, .markdown, .qmd) are supported. ' ..
+      'The file \'' .. uri .. '\' will not be included.'
     )
     return pandoc.Null()
   end
@@ -71,8 +71,8 @@ local function include_external(args, _kwargs, _meta, _raw_args, _context)
   if not contents then
     utils.log_error(
       EXTENSION_NAME,
-      "Could not open file '" .. uri .. "'. " ..
-      "Please check that the file path is correct and the file is accessible."
+      'Could not open file \'' .. uri .. '\'. ' ..
+      'Please check that the file path is correct and the file is accessible.'
     )
     return pandoc.Null()
   end
@@ -92,8 +92,8 @@ local function include_external(args, _kwargs, _meta, _raw_args, _context)
     if section_blocks == nil then
       utils.log_error(
         EXTENSION_NAME,
-        "Section '#" .. section_id .. "' not found in '" .. uri .. "'. " ..
-        "Please check that the section identifier matches a header in the file."
+        'Section \'#' .. section_id .. '\' not found in \'' .. uri .. '\'. ' ..
+        'Please check that the section identifier matches a header in the file.'
       )
       return pandoc.Null()
     end
