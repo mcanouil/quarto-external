@@ -39,6 +39,6 @@ To use the external extension, you can include external content or a section fro
 
 Here is the source code for a minimal example: [example.qmd](example.qmd).
 
-Outputs of `example.qmd`:
+Output of `example.qmd`:
 
 - [HTML](https://m.canouil.dev/quarto-external/)
