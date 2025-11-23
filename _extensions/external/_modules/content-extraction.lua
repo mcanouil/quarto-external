@@ -87,6 +87,42 @@ function content_module.extract_section(blocks, section_id, include_header)
   return section_blocks
 end
 
+--- Extract div from blocks by div ID.
+--- Recursively searches through blocks to find a Div with the specified identifier
+--- and returns its contents.
+---
+--- @param blocks table<integer, table> Array of Pandoc blocks to search
+--- @param div_id string Div identifier to find
+--- @param include_div boolean|nil Whether to include the div wrapper itself (default: false)
+--- @return table<integer, table>|nil Array of blocks in div, or nil if not found
+--- @usage local div_content = content_module.extract_div(blocks, "my-div", false)
+function content_module.extract_div(blocks, div_id, include_div)
+  if blocks == nil or div_id == nil or div_id == '' then
+    return nil
+  end
+
+  local should_include_div = include_div or false
+  local found_div = nil
+
+  pandoc.walk_block(pandoc.Div(blocks), {
+    Div = function(div)
+      if div.identifier == div_id and found_div == nil then
+        found_div = div
+      end
+    end
+  })
+
+  if found_div == nil then
+    return nil
+  end
+
+  if should_include_div then
+    return {found_div}
+  else
+    return found_div.content
+  end
+end
+
 --- Find block index by predicate function.
 --- Searches through blocks and returns the index of the first block
 --- for which the predicate function returns true.
