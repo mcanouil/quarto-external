@@ -24,3 +24,11 @@ format:
 {{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#usage >}}
 
 {{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#example >}}
+
+---
+
+## Include a Div
+
+Source: <https://github.com/mcanouil/quarto-extensions/blob/main/about.qmd>
+
+{{< external https://raw.githubusercontent.com/mcanouil/quarto-extensions/refs/heads/main/about.qmd#quarto-extensions-about >}}
