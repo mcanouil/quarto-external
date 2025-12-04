@@ -117,7 +117,7 @@ function content_module.extract_div(blocks, div_id, include_div)
   end
 
   if should_include_div then
-    return {found_div}
+    return { found_div }
   else
     return found_div.content
   end
