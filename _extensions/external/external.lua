@@ -25,10 +25,11 @@
 --- Extension name constant
 local EXTENSION_NAME = 'external'
 
---- Load utils, validation and content-extraction modules
+--- Load utils, validation, content-extraction and header-utils modules
 local utils = require(quarto.utils.resolve_path('_modules/utils.lua'):gsub('%.lua$', ''))
 local validation = require(quarto.utils.resolve_path('_modules/validation.lua'):gsub('%.lua$', ''))
 local content = require(quarto.utils.resolve_path('_modules/content-extraction.lua'):gsub('%.lua$', ''))
+local header_utils = require(quarto.utils.resolve_path('_modules/header-utils.lua'):gsub('%.lua$', ''))
 
 --- Includes external content or a section/div from a file into a Pandoc document.
 --- Supports including entire markdown files, specific sections identified by header IDs,
@@ -38,14 +39,14 @@ local content = require(quarto.utils.resolve_path('_modules/content-extraction.l
 --- For other markdown files, uses Pandoc's reader with shortcode escaping.
 ---
 --- @param args table Arguments array where first element is the file URI (with optional #id)
---- @param _kwargs table Named keyword arguments (unused)
+--- @param kwargs table Named keyword arguments (shift-heading-level-by, shift)
 --- @param _meta table Document metadata (unused)
 --- @param _raw_args table Raw arguments (unused)
 --- @param _context table Context information (unused)
 --- @return table Included content blocks or pandoc.Null() on error
 --- @usage {{< external path/to/file.md#section-id >}}
 --- @usage {{< external path/to/file.md#div-id >}}
-local function include_external(args, _kwargs, _meta, _raw_args, _context)
+local function include_external(args, kwargs, _meta, _raw_args, _context)
   --- @type string File URI to include
   local uri = pandoc.utils.stringify(args[1])
   --- @type string|nil Optional section or div identifier from hash fragment
@@ -55,6 +56,21 @@ local function include_external(args, _kwargs, _meta, _raw_args, _context)
   if hash_index then
     element_id = uri:sub(hash_index + 1)
     uri = uri:sub(1, hash_index - 1)
+  end
+
+  --- @type integer|nil Heading level shift amount
+  local shift = nil
+  --- @type string Raw shift value from kwargs
+  local shift_value = pandoc.utils.stringify(kwargs['shift-heading-level-by'] or kwargs['shift'] or '')
+  if shift_value ~= '' then
+    shift = tonumber(shift_value)
+    if shift == nil then
+      utils.log_warning(
+        EXTENSION_NAME,
+        'Invalid shift-heading-level-by value \'' .. shift_value .. '\'. ' ..
+        'Expected an integer. Headings will not be shifted.'
+      )
+    end
   end
 
   -- Use validation module to check markdown extension
@@ -112,11 +128,17 @@ local function include_external(args, _kwargs, _meta, _raw_args, _context)
   if element_id then
     local section_blocks = content.extract_section(contents_blocks, element_id, true)
     if section_blocks then
+      if shift then
+        section_blocks = header_utils.shift_headers(section_blocks, shift)
+      end
       return pandoc.Blocks(section_blocks)
     end
 
     local div_blocks = content.extract_div(contents_blocks, element_id, false)
     if div_blocks then
+      if shift then
+        div_blocks = header_utils.shift_headers(div_blocks, shift)
+      end
       return pandoc.Blocks(div_blocks)
     end
 
@@ -128,6 +150,9 @@ local function include_external(args, _kwargs, _meta, _raw_args, _context)
     return pandoc.Null()
   end
 
+  if shift then
+    contents_blocks = header_utils.shift_headers(contents_blocks, shift)
+  end
   return contents_blocks
 end
 

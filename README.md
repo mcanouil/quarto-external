@@ -55,6 +55,22 @@ If no header is found, it will then search for a div with that ID.
 >
 > **Note:** Using external content breaks the fully reproducible and self-contained nature of Quarto projects, as documents become dependent on external sources that may change or become unavailable.
 
+### Shifting heading levels
+
+You can adjust the heading levels of included content using the `shift-heading-level-by` parameter (or the shorter `shift` alias):
+
+```markdown
+{{< external <URI> shift-heading-level-by=1 >}}
+{{< external <URI>#<section-id> shift=1 >}}
+```
+
+- **Positive values** demote headings: `shift=1` turns h1 into h2, h2 into h3, etc.
+- **Negative values** promote headings: `shift=-1` turns h2 into h1, h3 into h2, etc.
+- Headings that would become level 0 or lower are converted to bold paragraphs.
+- Headings cannot exceed level 6 (capped).
+
+This is useful when including content from a standalone document (with its own h1) into a section of your document.
+
 ## Example
 
 Here is the source code for a minimal example: [example.qmd](example.qmd).

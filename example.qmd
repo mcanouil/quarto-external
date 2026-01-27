@@ -27,6 +27,18 @@ format:
 
 ---
 
+## Shift Heading Level
+
+The following includes the "Installation" section with headings shifted by +1 (demoted):
+
+```{.markdown shortcodes=false}
+{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#installation shift-heading-level-by=1 >}}
+```
+
+{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#installation shift-heading-level-by=1 >}}
+
+---
+
 ## Include a Div
 
 Source: <https://github.com/mcanouil/quarto-extensions/blob/main/about.qmd>
