@@ -1,0 +1,19 @@
+# _schema.yml for "external" shortcode extension
+# Describes shortcode arguments and attributes for IDE tooling and runtime validation.
+
+# Per-shortcode schemas.
+# Describes positional arguments and named attributes for {{< external >}}.
+shortcodes:
+  external:
+    description: "Includes external markdown content from a file, optionally targeting a specific section or div by ID."
+    arguments:
+      - name: file
+        type: string
+        required: true
+        description: "Path to the markdown file to include. Append '#id' to include only a specific section or div."
+    attributes:
+      shift-heading-level-by:
+        type: number
+        description: "Number of levels to shift headings in the included content (e.g., 1 to demote all headings by one level)."
+        aliases:
+          - shift
