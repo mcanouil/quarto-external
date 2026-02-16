@@ -11,6 +11,12 @@ shortcodes:
         type: string
         required: true
         description: "Path to the markdown file to include. Append '#id' to include only a specific section or div."
+        completion:
+          type: file
+          extensions:
+            - .md
+            - .markdown
+            - .qmd
     attributes:
       shift-heading-level-by:
         type: number
