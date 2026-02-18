@@ -3,6 +3,9 @@
 
 # Per-shortcode schemas.
 # Describes positional arguments and named attributes for {{< external >}}.
+
+$schema: https://m.canouil.dev/quarto-wizard/assets/schema/v1/extension-schema.json
+
 shortcodes:
   external:
     description: "Includes external markdown content from a file, optionally targeting a specific section or div by ID."
@@ -19,7 +22,7 @@ shortcodes:
             - .qmd
     attributes:
       shift-heading-level-by:
-        type: number
+        type: integer
         description: "Number of levels to shift headings in the included content (e.g., 1 to demote all headings by one level)."
         aliases:
           - shift
