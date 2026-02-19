@@ -1,0 +1,12 @@
+{
+	"Include file": {
+		"prefix": "external",
+		"body": "{{< external ${1:path/to/file.qmd} >}}",
+		"description": "Include the full content of an external markdown file"
+	},
+	"Include section": {
+		"prefix": "external-section",
+		"body": "{{< external ${1:path/to/file.qmd}#${2:section-id} >}}",
+		"description": "Include a specific section from an external file"
+	}
+}
