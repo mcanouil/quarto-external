@@ -6,8 +6,8 @@
 --- Extension name constant
 local EXTENSION_NAME = 'external'
 
---- Load utils, validation, content-extraction and header-utils modules
-local utils = require(quarto.utils.resolve_path('_modules/utils.lua'):gsub('%.lua$', ''))
+--- Load modules
+local log = require(quarto.utils.resolve_path('_modules/logging.lua'):gsub('%.lua$', ''))
 local validation = require(quarto.utils.resolve_path('_modules/validation.lua'):gsub('%.lua$', ''))
 local content = require(quarto.utils.resolve_path('_modules/content-extraction.lua'):gsub('%.lua$', ''))
 local header_utils = require(quarto.utils.resolve_path('_modules/header-utils.lua'):gsub('%.lua$', ''))
@@ -46,7 +46,7 @@ local function include_external(args, kwargs, _meta, _raw_args, _context)
   if shift_value ~= '' then
     shift = tonumber(shift_value)
     if shift == nil then
-      utils.log_warning(
+      log.log_warning(
         EXTENSION_NAME,
         'Invalid shift-heading-level-by value \'' .. shift_value .. '\'. ' ..
         'Expected an integer. Headings will not be shifted.'
@@ -56,7 +56,7 @@ local function include_external(args, kwargs, _meta, _raw_args, _context)
 
   -- Use validation module to check markdown extension
   if not validation.is_markdown(uri) then
-    utils.log_warning(
+    log.log_warning(
       EXTENSION_NAME,
       'Only markdown files (.md, .markdown, .qmd) are supported. ' ..
       'The file \'' .. uri .. '\' will not be included.'
@@ -68,7 +68,7 @@ local function include_external(args, kwargs, _meta, _raw_args, _context)
   --- @type string|nil File contents as string
   local _mt, contents = pandoc.mediabag.fetch(uri)
   if not contents then
-    utils.log_error(
+    log.log_error(
       EXTENSION_NAME,
       'Could not open file \'' .. uri .. '\'. ' ..
       'Please check that the file path is correct and the file is accessible.'
@@ -123,7 +123,7 @@ local function include_external(args, kwargs, _meta, _raw_args, _context)
       return pandoc.Blocks(div_blocks)
     end
 
-    utils.log_error(
+    log.log_error(
       EXTENSION_NAME,
       'Section or div \'#' .. element_id .. '\' not found in \'' .. uri .. '\'. ' ..
       'Please check that the identifier matches a header or div in the file.'
