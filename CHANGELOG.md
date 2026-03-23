@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-No user-facing changes.
+### Refactoring
+
+- refactor: Replace monolithic `utils.lua` with focused modules (`string.lua`, `logging.lua`, `metadata.lua`, `pandoc-helpers.lua`, `html.lua`, `paths.lua`, `colour.lua`).
 
 ## 1.5.0 (2026-02-21)
 
@@ -17,8 +19,6 @@ No user-facing changes.
 - fix: Add file completion hint to file shortcode argument (#25).
 
 ## 1.4.1 (2026-02-11)
-
-No user-facing changes.
 
 ## 1.4.0 (2026-01-27)
 
