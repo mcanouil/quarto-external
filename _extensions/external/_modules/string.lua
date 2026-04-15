@@ -1,8 +1,8 @@
 --- MC String - String manipulation and escaping for Quarto Lua filters and shortcodes
 --- @module string
 --- @license MIT
---- @copyright 2026 Micka??l Canouil
---- @author Micka??l Canouil
+--- @copyright 2026 Mickaël Canouil
+--- @author Mickaël Canouil
 --- @version 1.0.0
 
 local M = {}
