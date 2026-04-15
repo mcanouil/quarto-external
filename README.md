@@ -5,7 +5,7 @@ This repository provides an extension for Quarto that allows you to include cont
 ## Installation
 
 ```bash
-quarto add mcanouil/quarto-external@1.6.0
+quarto add mcanouil/quarto-external@1.6.1
 ```
 
 This will install the extension under the `_extensions` subdirectory.
