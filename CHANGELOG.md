@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+## 1.7.0 (2026-05-28)
+
+### New Features
+
+- feat: Add line-range inclusion via `#L<start>-<end>` (or `#L<n>` for a single line).
+- feat: Add `dedent` option that strips the common leading indent from every included code block.
+- feat: Cache fetched files per render so repeated includes of the same URI hit the cache.
+
+### Bug Fixes
+
+- fix: Strip YAML frontmatter even when the closing `---` has no trailing newline.
+- fix: Escape every `{{< ... >}}` shortcode in non-Quarto markdown sources, including nested shortcodes (previously the greedy regex broke when a shortcode body contained another shortcode).
+- fix: Warn when `shift-heading-level-by` is outside `[-5, 5]` instead of silently capping headings or demoting them to bold paragraphs, and truncate non-integer values explicitly rather than relying on `tonumber`'s float coercion.
+
+### Refactoring
+
+- refactor: Synchronise shared modules (`content-extraction.lua`, `html.lua`, `logging.lua`, `string.lua`, `validation.lua`) with canonical versions.
+
 ## 1.6.1 (2026-04-15)
 
 ### Refactoring
