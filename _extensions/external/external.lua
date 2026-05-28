@@ -79,6 +79,10 @@ local function escape_shortcodes(source)
   local prev
   --- @type integer Safety counter to avoid pathological inputs.
   local iter = 0
+  -- The pattern excludes `{` and `}` in the body, so each pass only matches
+  -- shortcodes that contain no nested shortcodes. Replacing matches with
+  -- placeholders that contain no braces exposes the next-outer layer on the
+  -- following pass, working outward to a fixed point.
   repeat
     iter = iter + 1
     if iter > 100 then
@@ -86,21 +90,16 @@ local function escape_shortcodes(source)
     end
     prev = source
     source = source:gsub('{{<([^{}]-)[ \t]>}}', function(body)
-      if body:find('{{<', 1, true) then
-        return nil
-      end
       idx = idx + 1
       store[idx] = '{{{<' .. body .. ' >}}}'
       return '\x01' .. idx .. '\x02'
     end)
   until source == prev
-  -- Restore placeholders iteratively in case they sit inside an outer body.
-  repeat
-    prev = source
-    source = source:gsub('\x01(%d+)\x02', function(n)
-      return store[tonumber(n)]
-    end)
-  until source == prev
+  -- Placeholders use control characters that never appear in the escaped form,
+  -- so a single pass restores every one.
+  source = source:gsub('\x01(%d+)\x02', function(n)
+    return store[tonumber(n)]
+  end)
   return source
 end
 
@@ -200,7 +199,8 @@ local function dedent_text(text)
       lines[#lines + 1] = line
     end
   end
-  -- gmatch above always appends one trailing empty entry from the sentinel.
+  -- When the input ends in a newline the sentinel produces an extra empty
+  -- entry; drop it so the rejoined output preserves the original line count.
   if lines[#lines] == '' then
     table.remove(lines)
   end
