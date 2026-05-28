@@ -1,0 +1,22 @@
+---
+title: "Snippet"
+---
+
+## First section {#first}
+
+A short paragraph in the first section.
+
+```python
+    def greet(name):
+        print(f"Hello, {name}")
+```
+
+## Second section {#second}
+
+Another short paragraph.
+
+::: {#second-div}
+
+Content inside a div in a `.qmd` snippet.
+
+:::

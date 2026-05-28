@@ -8,12 +8,12 @@ $schema: https://m.canouil.dev/quarto-wizard/assets/schema/v1/extension-schema.j
 
 shortcodes:
   external:
-    description: "Includes external markdown content from a file, optionally targeting a specific section or div by ID."
+    description: "Includes external markdown content from a file, optionally targeting a specific section, div, or line range."
     arguments:
       - name: file
         type: string
         required: true
-        description: "Path to the markdown file to include. Append '#id' to include only a specific section or div."
+        description: "Path to the markdown file to include. Append '#id' for a specific section or div, or '#L<start>-<end>' (or '#L<n>') for a line range."
         completion:
           type: file
           extensions:
@@ -23,6 +23,9 @@ shortcodes:
     attributes:
       shift-heading-level-by:
         type: integer
-        description: "Number of levels to shift headings in the included content (e.g., 1 to demote all headings by one level)."
+        description: "Number of levels to shift headings in the included content (e.g., 1 to demote all headings by one level). Values outside [-5, 5] always saturate and produce a warning."
         aliases:
           - shift
+      dedent:
+        type: boolean
+        description: "When true, strip the longest common leading whitespace from every code block in the included content."
