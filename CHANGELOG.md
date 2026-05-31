@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.7.0 (2026-05-31)
+
 ### New Features
 
 - feat: Add line-range inclusion via `#L<start>-<end>` (or `#L<n>` for a single line).
