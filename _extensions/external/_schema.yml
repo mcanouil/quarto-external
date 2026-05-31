@@ -1,10 +1,6 @@
-# _schema.yml for "external" shortcode extension
-# Describes shortcode arguments and attributes for IDE tooling and runtime validation.
+# Schema for the external extension
 
-# Per-shortcode schemas.
-# Describes positional arguments and named attributes for {{< external >}}.
-
-$schema: https://m.canouil.dev/quarto-wizard/assets/schema/v1/extension-schema.json
+$schema: https://m.canouil.dev/quarto-wizard/assets/schema/v2/extension-schema.json
 
 shortcodes:
   external:
@@ -13,7 +9,7 @@ shortcodes:
       - name: file
         type: string
         required: true
-        description: "Path to the markdown file to include. Append '#id' for a specific section or div, or '#L<start>-<end>' (or '#L<n>') for a line range."
+        description: "Path to the markdown file to include, optionally followed by '#id' for a section or div, or '#L<start>-<end>' (or '#L<n>') for a line range."
         completion:
           type: file
           extensions:
@@ -23,7 +19,7 @@ shortcodes:
     attributes:
       shift-heading-level-by:
         type: integer
-        description: "Number of levels to shift headings in the included content (e.g., 1 to demote all headings by one level). Values outside [-5, 5] always saturate and produce a warning."
+        description: "Number of levels to shift headings in the included content, where values outside the range minus five to five saturate and produce a warning."
         aliases:
           - shift
       dedent:
