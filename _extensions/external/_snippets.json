@@ -8,5 +8,15 @@
 		"prefix": "external-section",
 		"body": "{{< external ${1:path/to/file.qmd}#${2:section-id} >}}",
 		"description": "Include a specific section from an external file"
+	},
+	"Include line range": {
+		"prefix": "external-lines",
+		"body": "{{< external ${1:path/to/file.qmd}#L${2:start}-${3:end} >}}",
+		"description": "Include a line range from an external file"
+	},
+	"Include dedented": {
+		"prefix": "external-dedent",
+		"body": "{{< external ${1:path/to/file.qmd}#${2:section-id} dedent=true >}}",
+		"description": "Include a section and dedent every code block in it"
 	}
 }

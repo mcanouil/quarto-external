@@ -44,3 +44,43 @@ The following includes the "Installation" section with headings shifted by +1 (d
 Source: <https://github.com/mcanouil/quarto-extensions/blob/main/about.qmd>
 
 {{< external https://raw.githubusercontent.com/mcanouil/quarto-extensions/refs/heads/main/about.qmd#quarto-extensions-about >}}
+
+---
+
+## Include by Line Range
+
+You can include a slice of a file using `#L<start>-<end>` (or `#L<n>` for a single line).
+
+```{.markdown shortcodes=false}
+{{< external examples/snippet.qmd#L7-7 >}}
+```
+
+{{< external examples/snippet.qmd#L7-7 >}}
+
+---
+
+## Dedent Included Code
+
+Pass `dedent=true` to strip the longest common indent from every included code block.
+The code below comes from the snippet file with `dedent=true`:
+
+```{.markdown shortcodes=false}
+{{< external examples/snippet.qmd#first dedent=true >}}
+```
+
+{{< external examples/snippet.qmd#first dedent=true >}}
+
+---
+
+## Repeated Includes Are Cached
+
+The same URI is fetched once per render, even when referenced multiple times.
+
+```{.markdown shortcodes=false}
+{{< external examples/snippet.qmd#second >}}
+{{< external examples/snippet.qmd#second-div >}}
+```
+
+{{< external examples/snippet.qmd#second >}}
+
+{{< external examples/snippet.qmd#second-div >}}

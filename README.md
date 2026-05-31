@@ -68,8 +68,35 @@ You can adjust the heading levels of included content using the `shift-heading-l
 - **Negative values** promote headings: `shift=-1` turns h2 into h1, h3 into h2, etc.
 - Headings that would become level 0 or lower are converted to bold paragraphs.
 - Headings cannot exceed level 6 (capped).
+- Shift magnitudes greater than 5 produce a warning, since they always saturate.
 
 This is useful when including content from a standalone document (with its own h1) into a section of your document.
+
+### Including by line range
+
+Append `#L<start>-<end>` (or `#L<n>` for a single line) to the URI to include just a slice of the file:
+
+```markdown
+{{< external path/to/file.qmd#L10-20 >}}
+{{< external path/to/file.qmd#L42 >}}
+```
+
+The slice is taken from the raw file (before parsing), so line numbers correspond to what you see in your editor.
+
+### Dedenting included code blocks
+
+Pass `dedent=true` to strip the longest common leading whitespace from every code block in the included content:
+
+```markdown
+{{< external path/to/file.qmd#example dedent=true >}}
+```
+
+This is useful when the source code is indented inside a list item or a div in the original file.
+
+### Caching
+
+Each unique URI is fetched at most once per render.
+Including the same file in multiple shortcodes (different sections, line ranges, or divs) does not re-download or re-read it.
 
 ## Example
 
