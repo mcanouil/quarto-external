@@ -1,0 +1,23 @@
+---
+title: "A standalone document"
+author: "Someone else"
+---
+
+# Release notes {#release-notes}
+
+The first section of the sample file, with its own heading.
+
+## Details {#details}
+
+A subsection, so shifting has something to move.
+
+::: {#usage}
+
+A div with an identifier, rather than a heading.
+
+```r
+  x <- seq_len(10)
+  mean(x)
+```
+
+:::

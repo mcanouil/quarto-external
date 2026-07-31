@@ -1,0 +1,80 @@
+---
+title: "External"
+subtitle: "Include markdown from another file, or from a URL."
+description: "What the external extension is for, how to install it, and the smallest shortcode that pulls content in."
+authors:
+  - name: "Mickaël CANOUIL, _Ph.D._"
+    orcid: "0000-0002-3396-4549"
+    url: "https://mickael.canouil.fr"
+---
+
+Some prose belongs in more than one document: an installation section shared by a README and a website, a changelog written once and shown twice, a snippet that lives in a file outside the project.
+Copying it means keeping the copies in step, and forgetting to.
+
+`external` includes it instead.
+Point the shortcode at a file or a URL and its content is parsed and dropped in, whole or by the section, div, or line range you name.
+
+## Installation
+
+```bash
+quarto add {{< var extension.reference >}}
+```
+
+This will install the extension under the `_extensions` subdirectory.
+If you are using version control, you will want to check in this directory.
+
+Or install it from your editor with [Quarto Wizard](https://m.canouil.dev/quarto-wizard):
+
+::: {.btn-group role="group" aria-label="Quarto Wizard installer options"}
+
+[Visual Studio Code](vscode://mcanouil.quarto-wizard/install?repo={{< var extension.wizard-reference >}}){.btn .btn-outline-primary title="Install {{< var extension.reference >}} in Visual Studio Code using the Quarto Wizard extension."}
+[Positron](positron://mcanouil.quarto-wizard/install?repo={{< var extension.wizard-reference >}}){.btn .btn-outline-primary title="Install {{< var extension.reference >}} in Positron using the Quarto Wizard extension."}
+[VSCodium](vscodium://mcanouil.quarto-wizard/install?repo={{< var extension.wizard-reference >}}){.btn .btn-outline-primary title="Install {{< var extension.reference >}} in VSCodium using the Quarto Wizard extension."}
+
+:::
+
+## Quick start
+
+The whole file:
+
+```markdown
+{{{< external notes.qmd >}}}
+```
+
+One section of it, by the identifier of its heading:
+
+```markdown
+{{{< external notes.qmd#release-notes >}}}
+```
+
+A slice of it, by line number:
+
+```markdown
+{{{< external notes.qmd#L10-20 >}}}
+```
+
+::: {.callout-important}
+The shortcode has to sit on a line of its own, with a blank line above and below.
+It produces blocks rather than inline content, and Quarto will not place it correctly otherwise.
+:::
+
+See the [Reference](reference.qmd) for every option, and the [Examples](examples.qmd) for each of them rendered.
+
+## Where it works
+
+Every output format.
+The content is parsed into the document before any writer runs, so what you include behaves like anything you typed.
+
+::: {.callout-warning}
+Including content from outside the project trades reproducibility for reuse.
+A document that reads a URL is only as stable as that URL, and no longer builds the same way offline or a year from now.
+:::
+
+Code cells in the included file are not executed, in any format.
+
+## Links
+
+- [Reference](reference.qmd) for the full option list.
+- [Examples](examples.qmd) for rendered output.
+- [Changelog](changelog.qmd) for what each release changed.
+- [Source and issues](https://github.com/mcanouil/quarto-external) on GitHub.

@@ -1,5 +1,5 @@
 ---
-title: "External"
+title: "External Extension for Quarto"
 subtitle: "Quarto Extension"
 author:
   - name: "Mickaël CANOUIL, _Ph.D._"
@@ -7,80 +7,33 @@ author:
     url: "https://mickael.canouil.fr"
 format:
   html:
-    output-file: index
     toc: true
 ---
 
-```{.markdown shortcodes=false}
-{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#installation >}}
+The shortcode has to sit on a line of its own, with a blank line before and after.
 
-{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#usage >}}
+A whole section, by the identifier of its heading:
 
-{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#example >}}
+```markdown
+{{{< external examples/snippet.qmd#first >}}}
 ```
 
-{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#installation >}}
+{{< external examples/snippet.qmd#first >}}
 
-{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#usage >}}
+A div, by its identifier, with the headings shifted so they sit under this one:
 
-{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#example >}}
-
----
-
-## Shift Heading Level
-
-The following includes the "Installation" section with headings shifted by +1 (demoted):
-
-```{.markdown shortcodes=false}
-{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#installation shift-heading-level-by=1 >}}
+```markdown
+{{{< external examples/snippet.qmd#second shift=3 >}}}
 ```
 
-{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/refs/heads/main/README.md#installation shift-heading-level-by=1 >}}
+{{< external examples/snippet.qmd#second shift=3 >}}
 
----
+A slice of the raw file, by line number:
 
-## Include a Div
-
-Source: <https://github.com/mcanouil/quarto-extensions/blob/main/about.qmd>
-
-{{< external https://raw.githubusercontent.com/mcanouil/quarto-extensions/refs/heads/main/about.qmd#quarto-extensions-about >}}
-
----
-
-## Include by Line Range
-
-You can include a slice of a file using `#L<start>-<end>` (or `#L<n>` for a single line).
-
-```{.markdown shortcodes=false}
-{{< external examples/snippet.qmd#L7-7 >}}
+```markdown
+{{{< external examples/snippet.qmd#L7 >}}}
 ```
 
-{{< external examples/snippet.qmd#L7-7 >}}
+{{< external examples/snippet.qmd#L7 >}}
 
----
-
-## Dedent Included Code
-
-Pass `dedent=true` to strip the longest common indent from every included code block.
-The code below comes from the snippet file with `dedent=true`:
-
-```{.markdown shortcodes=false}
-{{< external examples/snippet.qmd#first dedent=true >}}
-```
-
-{{< external examples/snippet.qmd#first dedent=true >}}
-
----
-
-## Repeated Includes Are Cached
-
-The same URI is fetched once per render, even when referenced multiple times.
-
-```{.markdown shortcodes=false}
-{{< external examples/snippet.qmd#second >}}
-{{< external examples/snippet.qmd#second-div >}}
-```
-
-{{< external examples/snippet.qmd#second >}}
-
-{{< external examples/snippet.qmd#second-div >}}
+Full documentation: <https://m.canouil.dev/quarto-external/>.
