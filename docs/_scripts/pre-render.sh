@@ -3,9 +3,9 @@
 # Documentation Pre-render Script
 # Generates the project variables and the changelog page.
 #
-# @license MIT License
-# @copyright 2026 Mickaël Canouil
-# @author Mickaël Canouil
+# @license %%license%%
+# @copyright %%year%% %%author%%
+# @author %%author%%
 #
 # Both generated files, _variables.yml and changelog.qmd, are ignored by Git and
 # removed by post-render.sh. The extension itself cannot be staged here, because
@@ -198,7 +198,21 @@ in_version && /^#+ / {
   next
 }
 
-{ emit($0) }
+# A changelog entry naming one of the shortcodes the extension provides, as
+# `{{< bam >}}`, is expanded by Quarto rather than shown. The site is not
+# rendered by that format, so the expansion fails the render outright.
+# Escaping to the Quarto literal form leaves the text visible.
+function escape_shortcodes(line) {
+  gsub(/{{{</, "\001", line)
+  gsub(/>}}}/, "\002", line)
+  gsub(/{{</, "{{{<", line)
+  gsub(/>}}/, ">}}}", line)
+  gsub(/\001/, "{{{<", line)
+  gsub(/\002/, ">}}}", line)
+  return line
+}
+
+{ emit(escape_shortcodes($0)) }
 ' "${ROOT_DIR}/CHANGELOG.md" >"${DOCS_DIR}/changelog.qmd"
 
 printf '[pre-render] CHANGELOG.md -> changelog.qmd\n'
