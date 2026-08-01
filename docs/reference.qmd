@@ -17,7 +17,7 @@ description: "The complete external configuration: the URI and its fragment form
 
 : The argument of the `external` shortcode. {.striped .hover tbl-colwidths="[15,13,12,60]"}
 
-A path is resolved from the working directory of the render, so a file outside the project is reached the same way any relative path would be.
+A relative path is resolved against the directory of the document that carries the shortcode, not against the project root, so `../shared/notes.md` reaches a sibling directory the same way a relative link would.
 A URL is fetched over the network at render time.
 
 ::: {.callout-important}
@@ -30,7 +30,7 @@ It returns blocks, not inline content.
 | Fragment | Selects |
 | --- | --- |
 | none | The whole file. |
-| `#<id>` | The section whose heading carries that identifier, heading included. If no heading matches, the div carrying it. |
+| `#<id>` | The section whose heading carries that identifier, heading included, up to the next heading of the same or a higher level. If no heading matches, the contents of the div carrying that identifier, without the div itself. |
 | `#L<n>` | A single line. |
 | `#L<start>-<end>` | An inclusive range of lines. `#L10-L20` works too. |
 
@@ -46,6 +46,9 @@ A line range is taken from the raw file, before parsing, so the numbers match wh
 | `dedent` | boolean | `false` | Strips the longest common leading whitespace from every code block in the included content. |
 
 : Attributes of the `external` shortcode. {.striped .hover tbl-colwidths="[27,13,10,50]"}
+
+`dedent` accepts `true`, `1`, and `yes`, or `false`, `0`, and `no`.
+Anything else is read as if the attribute had not been written, without a warning.
 
 ## Shifting headings
 
@@ -100,4 +103,5 @@ Every failure leaves the surrounding document intact and removes only the shortc
 
 - Markdown only: `.md`, `.markdown`, and `.qmd`.
 - Code cells in the included file are never executed, in any format.
+- Identifiers come across as they are written. Including the same heading or div twice on one page, or including a section that contains an identifier the page already carries, puts that identifier in the output twice, and only the first is reachable by an anchor link. Pull each part of a file once.
 - Including from outside the project makes the document depend on something the project does not version. A URL can change or disappear, and the build stops being reproducible.

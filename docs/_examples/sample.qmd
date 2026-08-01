@@ -9,7 +9,7 @@ The first section of the sample file, with its own heading.
 
 ## Details {#details}
 
-A subsection, so shifting has something to move.
+A subsection, with an identified div under it.
 
 ::: {#usage}
 
@@ -21,3 +21,11 @@ A div with an identifier, rather than a heading.
 ```
 
 :::
+
+# Upgrade notes {#upgrade-notes}
+
+A second top-level section, so an example can shift a heading of its own.
+
+## Breaking changes {#breaking-changes}
+
+A subsection, so a shift has something to nest.

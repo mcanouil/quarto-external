@@ -21,7 +21,7 @@ The first section of the sample file, with its own heading.
 
 ## Details {#details}
 
-A subsection, so shifting has something to move.
+A subsection, with an identified div under it.
 
 ::: {#usage}
 
@@ -33,7 +33,18 @@ A div with an identifier, rather than a heading.
 ```
 
 :::
+
+# Upgrade notes {#upgrade-notes}
+
+A second top-level section, so an example can shift a heading of its own.
+
+## Breaking changes {#breaking-changes}
+
+A subsection, so a shift has something to nest.
 ````
+
+Each example below pulls a different part of it.
+No two of them overlap, so no identifier from the sample reaches this page twice.
 
 ## One section
 
@@ -81,15 +92,16 @@ The code block above keeps the indentation it had inside the div.
 
 ## Shifting headings
 
-The sample starts at level one. Included as it stands, its headings would sit above the ones on this page.
+The sample starts at level one.
+Included as it stands, its headings would sit above the ones on this page.
 
 ```markdown
-{{{< external _examples/sample.qmd#release-notes shift=3 >}}}
+{{{< external _examples/sample.qmd#upgrade-notes shift=3 >}}}
 ```
 
 ::: {.border .rounded .p-3}
 
-{{< external _examples/sample.qmd#release-notes shift=3 >}}
+{{< external _examples/sample.qmd#upgrade-notes shift=3 >}}
 
 :::
 
@@ -98,28 +110,30 @@ The sample starts at level one. Included as it stands, its headings would sit ab
 ## A line range
 
 Line numbers are taken from the raw file, before parsing, so they match what an editor shows.
+A range does not have to line up with a section: here it is the fenced block on lines 18 to 21, and nothing else.
 
 ```markdown
-{{{< external _examples/sample.qmd#L6-L8 >}}}
+{{{< external _examples/sample.qmd#L18-L21 >}}}
 ```
 
 ::: {.border .rounded .p-3}
 
-{{< external _examples/sample.qmd#L6-L8 >}}
+{{< external _examples/sample.qmd#L18-L21 >}}
 
 :::
 
 ## A `.md` file
 
 A `.md` file is read by Pandoc, and any shortcode in it is escaped rather than run.
+The sample starts at level one, so `shift=2` is here as well, to keep its heading below this one.
 
 ```markdown
-{{{< external _examples/sample.md >}}}
+{{{< external _examples/sample.md shift=2 >}}}
 ```
 
 ::: {.border .rounded .p-3}
 
-{{< external _examples/sample.md >}}
+{{< external _examples/sample.md shift=2 >}}
 
 :::
 
