@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.7.1 (2026-08-01)
+
 ### Bug Fixes
 
 - fix: Read the `shift` alias for `shift-heading-level-by`. Quarto passes an empty value for an attribute the author did not write, and an empty value is truthy in Lua, so the alias was never reached and `shift=` silently did nothing.
