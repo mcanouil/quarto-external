@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- fix: Read the `shift` alias for `shift-heading-level-by`. Quarto passes an empty value for an attribute the author did not write, and an empty value is truthy in Lua, so the alias was never reached and `shift=` silently did nothing.
+
+### Documentation
+
+- docs: Add a documentation website under `docs/`, built on the `atelier` project type and published to <https://m.canouil.dev/quarto-external/>.
+- docs: Trim `README.md` to a landing page pointing at the website, and `example.qmd` to a short starting point to copy.
+- docs: Add the Pages workflow, which renders `docs/` on pull requests and deploys it from the release tag.
+- docs: Add the Quarto Extensions Updates workflow, scanning `docs` for the website's own dependencies.
+- docs: Record that YAML front matter is stripped only when a `#<id>` fragment is used, and that a `.md` file has its shortcodes escaped while a `.qmd` file has them run.
+
 ## 1.7.0 (2026-05-31)
 
 ### New Features

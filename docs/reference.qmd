@@ -1,0 +1,107 @@
+---
+title: "Reference"
+subtitle: "Every option the external extension accepts."
+description: "The complete external configuration: the URI and its fragment forms, heading shifting, dedenting, and how .md and .qmd files are parsed differently."
+---
+
+## Shortcode
+
+```markdown
+{{{< external <URI> >}}}
+{{{< external <URI>#<fragment> shift-heading-level-by=... dedent=... >}}}
+```
+
+| Argument | Type | Required | Description |
+| --- | --- | --- | --- |
+| `URI` | string | Yes | A path to a markdown file, or a URL. An optional `#fragment` selects part of it. |
+
+: The argument of the `external` shortcode. {.striped .hover tbl-colwidths="[15,13,12,60]"}
+
+A relative path is resolved against the directory of the document that carries the shortcode, not against the project root, so `../shared/notes.md` reaches a sibling directory the same way a relative link would.
+A URL is fetched over the network at render time.
+
+::: {.callout-important}
+The shortcode must sit on a line of its own, with a blank line before and after.
+It returns blocks, not inline content.
+:::
+
+### Fragments
+
+| Fragment | Selects |
+| --- | --- |
+| none | The whole file. |
+| `#<id>` | The section whose heading carries that identifier, heading included, up to the next heading of the same or a higher level. If no heading matches, the contents of the div carrying that identifier, without the div itself. |
+| `#L<n>` | A single line. |
+| `#L<start>-<end>` | An inclusive range of lines. `#L10-L20` works too. |
+
+: Fragment forms. {.striped .hover tbl-colwidths="[30,70]"}
+
+A line range is taken from the raw file, before parsing, so the numbers match what an editor shows.
+
+### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `shift-heading-level-by` | integer | `0` | Moves every heading in the included content by this many levels. Aliased as `shift`. |
+| `dedent` | boolean | `false` | Strips the longest common leading whitespace from every code block in the included content. |
+
+: Attributes of the `external` shortcode. {.striped .hover tbl-colwidths="[27,13,10,50]"}
+
+`dedent` accepts `true`, `1`, and `yes`, or `false`, `0`, and `no`.
+Anything else is read as if the attribute had not been written, without a warning.
+
+## Shifting headings
+
+A file written to stand alone starts at level one, which is rarely the level it should occupy once included.
+
+- A positive shift demotes: `shift=1` turns a level one heading into level two.
+- A negative shift promotes: `shift=-1` turns level two into level one.
+- A heading that would fall below level one becomes a bold paragraph.
+- A heading that would rise above level six stays at level six.
+
+A shift larger than five in either direction always saturates, so the extension warns rather than silently flattening the document.
+
+## How the file is parsed
+
+The suffix decides the parser, and the two behave differently.
+
+| Suffix | Parser | Shortcodes in the file |
+| --- | --- | --- |
+| `.qmd` | Quarto's own | Run, so citations, cross-references, and shortcodes work. |
+| `.md`, `.markdown` | Pandoc's reader | Escaped, so they render as visible text. |
+
+: What the suffix changes. {.striped .hover tbl-colwidths="[18,22,60]"}
+
+Anything else is refused with a warning, and the shortcode renders nothing.
+
+::: {.callout-note}
+YAML front matter is removed only when a `#<id>` fragment is used.
+A whole-file or line-range include passes the raw text to the parser, front matter and all.
+:::
+
+## Caching
+
+Each URI is fetched once per render, however many shortcodes name it.
+Pulling four sections out of one remote file is one request.
+
+## Validation
+
+| Rule | On failure |
+| --- | --- |
+| Suffix is `.md`, `.markdown`, or `.qmd`. | Warns, and nothing is included. |
+| The file can be read or fetched. | Errors, and nothing is included. |
+| The `#<id>` matches a heading or a div. | Errors, and nothing is included. |
+| The line range is non-empty and within the file. | Errors, and nothing is included. |
+| `shift-heading-level-by` is a number. | Warns, and no shift is applied. |
+| `shift-heading-level-by` is a whole number. | Warns, and the value is truncated towards zero. |
+
+: Validation rules and what happens when a value fails them. {.striped .hover tbl-colwidths="[55,45]"}
+
+Every failure leaves the surrounding document intact and removes only the shortcode.
+
+## Limitations
+
+- Markdown only: `.md`, `.markdown`, and `.qmd`.
+- Code cells in the included file are never executed, in any format.
+- Identifiers come across as they are written. Including the same heading or div twice on one page, or including a section that contains an identifier the page already carries, puts that identifier in the output twice, and only the first is reachable by an anchor link. Pull each part of a file once.
+- Including from outside the project makes the document depend on something the project does not version. A URL can change or disappear, and the build stops being reproducible.

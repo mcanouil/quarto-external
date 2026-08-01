@@ -1,0 +1,31 @@
+---
+title: "A standalone document"
+author: "Someone else"
+---
+
+# Release notes {#release-notes}
+
+The first section of the sample file, with its own heading.
+
+## Details {#details}
+
+A subsection, with an identified div under it.
+
+::: {#usage}
+
+A div with an identifier, rather than a heading.
+
+```r
+  x <- seq_len(10)
+  mean(x)
+```
+
+:::
+
+# Upgrade notes {#upgrade-notes}
+
+A second top-level section, so an example can shift a heading of its own.
+
+## Breaking changes {#breaking-changes}
+
+A subsection, so a shift has something to nest.

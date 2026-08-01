@@ -296,8 +296,17 @@ local function include_external(args, kwargs, _meta, _raw_args, _context)
 
   --- @type integer|nil Heading level shift amount
   local shift = nil
-  --- @type string Raw shift value from kwargs
-  local shift_value = pandoc.utils.stringify(kwargs['shift-heading-level-by'] or kwargs['shift'] or '')
+  --- @type string Raw shift value from kwargs.
+  --- Quarto passes an empty Inlines list for an attribute the author did not
+  --- write, and an empty list is truthy in Lua, so `a or b` always stops at
+  --- the first name and the `shift` alias is never read. Each candidate is
+  --- stringified and tested for emptiness instead.
+  local shift_value = ''
+  for _, key in ipairs({ 'shift-heading-level-by', 'shift' }) do
+    if shift_value == '' then
+      shift_value = pandoc.utils.stringify(kwargs[key] or '')
+    end
+  end
   if shift_value ~= '' then
     shift = tonumber(shift_value)
     if shift == nil then

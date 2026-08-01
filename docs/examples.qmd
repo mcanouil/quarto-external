@@ -1,0 +1,145 @@
+---
+title: "Examples"
+subtitle: "Each fragment form, rendered."
+description: "The external shortcode pulling from a sample file: whole file, section, div, line range, shifted headings, and dedented code."
+---
+
+Everything below is included by the extension as this page is built, from one sample file kept beside these pages in `_examples/`.
+The leading underscore keeps Quarto from rendering it as a page of its own.
+
+The sample is a small standalone document:
+
+````markdown
+---
+title: "A standalone document"
+author: "Someone else"
+---
+
+# Release notes {#release-notes}
+
+The first section of the sample file, with its own heading.
+
+## Details {#details}
+
+A subsection, with an identified div under it.
+
+::: {#usage}
+
+A div with an identifier, rather than a heading.
+
+```r
+  x <- seq_len(10)
+  mean(x)
+```
+
+:::
+
+# Upgrade notes {#upgrade-notes}
+
+A second top-level section, so an example can shift a heading of its own.
+
+## Breaking changes {#breaking-changes}
+
+A subsection, so a shift has something to nest.
+````
+
+Each example below pulls a different part of it.
+No two of them overlap, so no identifier from the sample reaches this page twice.
+
+## One section
+
+Name the identifier of a heading, and you get that heading and everything under it.
+
+```markdown
+{{{< external _examples/sample.qmd#details >}}}
+```
+
+::: {.border .rounded .p-3}
+
+{{< external _examples/sample.qmd#details >}}
+
+:::
+
+## One div
+
+The same fragment syntax finds a div when no heading matches, and returns its contents.
+
+```markdown
+{{{< external _examples/sample.qmd#usage >}}}
+```
+
+::: {.border .rounded .p-3}
+
+{{< external _examples/sample.qmd#usage >}}
+
+:::
+
+The code block above keeps the indentation it had inside the div.
+
+## Dedenting
+
+`dedent=true` strips the longest common leading whitespace from every code block in what is included.
+
+```markdown
+{{{< external _examples/sample.qmd#usage dedent=true >}}}
+```
+
+::: {.border .rounded .p-3}
+
+{{< external _examples/sample.qmd#usage dedent=true >}}
+
+:::
+
+## Shifting headings
+
+The sample starts at level one.
+Included as it stands, its headings would sit above the ones on this page.
+
+```markdown
+{{{< external _examples/sample.qmd#upgrade-notes shift=3 >}}}
+```
+
+::: {.border .rounded .p-3}
+
+{{< external _examples/sample.qmd#upgrade-notes shift=3 >}}
+
+:::
+
+`shift=3` moves the level one heading to level four and the level two heading to level five, so both sit under this section.
+
+## A line range
+
+Line numbers are taken from the raw file, before parsing, so they match what an editor shows.
+A range does not have to line up with a section: here it is the fenced block on lines 18 to 21, and nothing else.
+
+```markdown
+{{{< external _examples/sample.qmd#L18-L21 >}}}
+```
+
+::: {.border .rounded .p-3}
+
+{{< external _examples/sample.qmd#L18-L21 >}}
+
+:::
+
+## A `.md` file
+
+A `.md` file is read by Pandoc, and any shortcode in it is escaped rather than run.
+The sample starts at level one, so `shift=2` is here as well, to keep its heading below this one.
+
+```markdown
+{{{< external _examples/sample.md shift=2 >}}}
+```
+
+::: {.border .rounded .p-3}
+
+{{< external _examples/sample.md shift=2 >}}
+
+:::
+
+The `{{{< meta title >}}}` in that file comes out as text.
+Had the same content been in a `.qmd` file, Quarto would have run it and printed this page's title instead.
+
+## Source
+
+The repository ships a short, standalone starting point you can copy: [`example.qmd`](https://github.com/mcanouil/quarto-external/blob/main/example.qmd).
