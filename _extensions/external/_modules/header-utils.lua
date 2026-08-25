@@ -1,5 +1,5 @@
 --- Header utilities for Quarto extensions
---- @module header_utils
+--- @module "header_utils"
 --- @license MIT
 --- @copyright 2026 Mickaël Canouil
 --- @author Mickaël Canouil
