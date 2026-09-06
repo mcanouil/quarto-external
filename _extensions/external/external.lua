@@ -11,9 +11,9 @@ local EXTENSION_NAME = 'external'
 local MAX_SHIFT_MAGNITUDE = 5
 
 --- Load modules
-local log = require(quarto.utils.resolve_path('_modules/logging.lua'):gsub('%.lua$', ''))
+local log = require(quarto.utils.resolve_path('_vendor/quarto-lua-modules/logging.lua'):gsub('%.lua$', ''))
 local validation = require(quarto.utils.resolve_path('_modules/validation.lua'):gsub('%.lua$', ''))
-local content = require(quarto.utils.resolve_path('_modules/content-extraction.lua'):gsub('%.lua$', ''))
+local content = require(quarto.utils.resolve_path('_vendor/quarto-lua-modules/content-extraction.lua'):gsub('%.lua$', ''))
 local header_utils = require(quarto.utils.resolve_path('_modules/header-utils.lua'):gsub('%.lua$', ''))
 
 --- In-memory cache of fetched file contents, keyed by URI.
