@@ -3,9 +3,9 @@
 # Documentation Pre-render Script
 # Generates the project variables and the changelog page.
 #
-# @license %%license%%
-# @copyright %%year%% %%author%%
-# @author %%author%%
+# @license MIT License
+# @copyright 2026 Mickaël Canouil
+# @author Mickaël Canouil
 #
 # Both generated files, _variables.yml and changelog.qmd, are ignored by Git and
 # removed by post-render.sh. The extension itself cannot be staged here, because
