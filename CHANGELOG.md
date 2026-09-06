@@ -4,7 +4,7 @@
 
 ### New Features
 
-- feat: Check each `external` shortcode call against the extension schema and report what it does not accept.
+- feat: Check each `external` shortcode call against the extension schema and report what it does not accept. (#49)
 
 ## 1.7.1 (2026-08-01)
 
