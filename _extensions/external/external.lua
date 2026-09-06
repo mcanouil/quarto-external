@@ -15,6 +15,25 @@ local log = require(quarto.utils.resolve_path('_vendor/quarto-lua-modules/loggin
 local validation = require(quarto.utils.resolve_path('_modules/validation.lua'):gsub('%.lua$', ''))
 local content = require(quarto.utils.resolve_path('_vendor/quarto-lua-modules/content-extraction.lua'):gsub('%.lua$', ''))
 local header_utils = require(quarto.utils.resolve_path('_modules/header-utils.lua'):gsub('%.lua$', ''))
+local schema = require(quarto.utils.resolve_path('_vendor/quarto-wizard/schema.lua'):gsub('%.lua$', ''))
+local check = require(quarto.utils.resolve_path('_vendor/quarto-lua-modules/schema-check.lua'):gsub('%.lua$', ''))
+
+--- The schema check, built once and reused by every shortcode call. It reads
+--- `_schema.yml` on the way in and checks each call against the entry that
+--- describes it.
+---
+--- The schema declares no document options, so there is no document
+--- configuration to check and `options` is never called.
+---
+--- The validator is injected rather than required by the check module, so the
+--- two vendored sources stay independent of where the other was placed.
+---
+--- The extension contributes a shortcode and no filter, so the check runs from
+--- the shortcode handler. There is nowhere else it could run.
+---
+--- A schema that cannot be read is reported by the module as an error and the
+--- render carries on: a configuration file must not stop a document.
+local checker = check.new(schema, EXTENSION_NAME)
 
 --- In-memory cache of fetched file contents, keyed by URI.
 --- Avoids refetching the same file for repeated shortcodes in one render.
@@ -278,6 +297,8 @@ end
 --- @usage {{< external path/to/file.md#L10-20 >}}
 --- @usage {{< external path/to/file.md dedent=true >}}
 local function include_external(args, kwargs, _meta, _raw_args, _context)
+  checker:call('external', args, kwargs)
+
   --- @type string File URI to include
   local uri = pandoc.utils.stringify(args[1])
   --- @type string|nil Raw fragment after `#`, if present
