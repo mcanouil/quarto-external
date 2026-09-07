@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.8.1 (2026-09-07)
+
 ### Bug Fixes
 
 - fix: The `external` shortcode no longer stops the render when it is called with no file path. It reports the missing argument and includes nothing. (#53)
