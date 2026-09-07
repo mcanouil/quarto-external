@@ -5,7 +5,7 @@
 ## Installation
 
 ```bash
-quarto add mcanouil/quarto-external@1.7.1
+quarto add mcanouil/quarto-external@1.8.0
 ```
 
 This will install the extension under the `_extensions` subdirectory.
