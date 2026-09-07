@@ -299,6 +299,14 @@ end
 local function include_external(args, kwargs, _meta, _raw_args, _context)
   checker:call('external', args, kwargs)
 
+  if #args == 0 then
+    log.log_warning(
+      EXTENSION_NAME,
+      'The external shortcode requires a file path as its first argument. Nothing was included.'
+    )
+    return pandoc.Null()
+  end
+
   --- @type string File URI to include
   local uri = pandoc.utils.stringify(args[1])
   --- @type string|nil Raw fragment after `#`, if present
