@@ -20,9 +20,15 @@ website:
   title: "External"
   description: "A Quarto shortcode that includes markdown from another file or a URL, whole or by section, div, or line range."
   # No trailing slash: Quarto builds the social image URL by concatenating this
-  # with a leading-slash image path, without normalising.
+  # with the image path, without normalising.
   site-url: &site-url https://m.canouil.dev/quarto-external
   repo-url: https://github.com/mcanouil/quarto-external
+  open-graph:
+    image: assets/social/og-image.png
+    image-alt: "The quarto-external social card: the extension name and the \"shortcode\" badge over the line \"Include content from external files with a simple shortcode\", beside a dark code window showing document.qmd."
+  twitter-card:
+    image: assets/social/og-image.png
+    image-alt: "The quarto-external social card: the extension name and the \"shortcode\" badge over the line \"Include content from external files with a simple shortcode\", beside a dark code window showing document.qmd."
   # The Quarto project root is `docs/`, so without this every edit and issue
   # link points at a path one level up from the page it was built for.
   repo-subdir: docs
