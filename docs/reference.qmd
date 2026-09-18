@@ -48,7 +48,9 @@ A line range is taken from the raw file, before parsing, so the numbers match wh
 : Attributes of the `external` shortcode. {.striped .hover tbl-colwidths="[27,13,10,50]"}
 
 The extension reads `true`, `1`, and `yes` as true, and `false`, `0`, and `no` as false.
-The schema accepts only `true` and `false`, so every other spelling is reported even though the extension honours it.
+Any other value is read as if the attribute had not been written.
+
+The schema accepts only `true` and `false`, so the four extra spellings are reported even though they work, and an unrecognised value is reported as well.
 Write `true` or `false` to keep the render quiet.
 
 ## Shifting headings
@@ -98,7 +100,8 @@ Pulling four sections out of one remote file is one request.
 
 : Validation rules and what happens when a value fails them. {.striped .hover tbl-colwidths="[55,45]"}
 
-Every failure in that table leaves the surrounding document intact and removes only the shortcode, except one.
+A failure over the shift includes the content anyway, with no shift or a truncated one.
+Every other failure in that table leaves the surrounding document intact and removes only the shortcode, except one.
 
 A target that cannot be read or fetched stops the render.
 Pandoc raises rather than reporting the failure, so the extension never reaches the message it holds for that case.

@@ -1,12 +1,12 @@
 ---
 title: "Examples"
 subtitle: "Each fragment form, rendered."
-description: "The external shortcode pulling from a sample file: whole file, section, div, line range, shifted headings, and dedented code."
+description: "The external shortcode pulling from sample files: whole file, one line, section, div, line range, shifted and promoted headings, paths inside the file, a missing target, and a URL."
 ---
 
 Everything below is included by the extension as this page is built, from sample files kept beside these pages in `_examples/`.
 The leading underscore keeps Quarto from rendering them as pages of their own.
-The last two sections print their call instead of running it, for the reasons given there.
+The missing-target and URL sections print their calls instead of running them, for the reasons given there.
 
 The main sample is a small standalone document:
 
