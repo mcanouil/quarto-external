@@ -47,8 +47,11 @@ A line range is taken from the raw file, before parsing, so the numbers match wh
 
 : Attributes of the `external` shortcode. {.striped .hover tbl-colwidths="[27,13,10,50]"}
 
-`dedent` accepts `true`, `1`, and `yes`, or `false`, `0`, and `no`.
-Anything else is read as if the attribute had not been written, without a warning.
+The extension reads `true`, `1`, and `yes` as true, and `false`, `0`, and `no` as false.
+Any other value is read as if the attribute had not been written.
+
+The schema accepts only `true` and `false`, so the four extra spellings are reported even though they work, and an unrecognised value is reported as well.
+Write `true` or `false` to keep the render quiet.
 
 ## Shifting headings
 
@@ -89,7 +92,7 @@ Pulling four sections out of one remote file is one request.
 | Rule | On failure |
 | --- | --- |
 | Suffix is `.md`, `.markdown`, or `.qmd`. | Warns, and nothing is included. |
-| The file can be read or fetched. | Errors, and nothing is included. |
+| The file can be read or fetched. | Stops the render. |
 | The `#<id>` matches a heading or a div. | Errors, and nothing is included. |
 | The line range is non-empty and within the file. | Errors, and nothing is included. |
 | `shift-heading-level-by` is a number. | Warns, and no shift is applied. |
@@ -97,7 +100,12 @@ Pulling four sections out of one remote file is one request.
 
 : Validation rules and what happens when a value fails them. {.striped .hover tbl-colwidths="[55,45]"}
 
-Every failure leaves the surrounding document intact and removes only the shortcode.
+A failure over the shift includes the content anyway, with no shift or a truncated one.
+Every other failure in that table leaves the surrounding document intact and removes only the shortcode, except one.
+
+A target that cannot be read or fetched stops the render.
+Pandoc raises rather than reporting the failure, so the extension never reaches the message it holds for that case.
+Check a path before you rely on it, and expect a failed build rather than a document with a gap in it.
 
 ## Limitations
 

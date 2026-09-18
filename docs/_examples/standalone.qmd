@@ -1,0 +1,12 @@
+---
+title: "A second standalone document"
+author: "Someone else"
+---
+
+# Migration guide {#migration-guide}
+
+A second sample file, so a whole-file example does not repeat an identifier from the first.
+
+## Deprecations {#deprecations}
+
+A subsection, so a whole-file include has two levels to move.
