@@ -45,7 +45,7 @@ A subsection, so a shift has something to nest.
 ````
 
 The first examples pull different parts of it, and the later ones use further files in the same directory.
-No two of them overlap, so no identifier reaches this page twice.
+Some of them pull the same content twice, and no identifier reaches this page twice, because extracting a div drops the wrapper that carries the identifier.
 
 ## One section
 
@@ -215,7 +215,7 @@ A bold paragraph carries no identifier, so neither `#top-note` nor `#under-top-n
 
 ## Paths inside the file
 
-The extension moves heading levels, strips indentation from code blocks, and escapes the shortcodes in a `.md` file.
+The extension moves heading levels when `shift-heading-level-by` asks it to, strips indentation when `dedent` is set, and always escapes the shortcodes in a `.md` file.
 It touches no link and no image, so a path arrives exactly as the file wrote it.
 
 `_examples/nested/note.md` sits one directory below this page, and its link names `reference.qmd`.
