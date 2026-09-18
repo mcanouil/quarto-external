@@ -4,10 +4,11 @@ subtitle: "Each fragment form, rendered."
 description: "The external shortcode pulling from a sample file: whole file, section, div, line range, shifted headings, and dedented code."
 ---
 
-Everything below is included by the extension as this page is built, from one sample file kept beside these pages in `_examples/`.
-The leading underscore keeps Quarto from rendering it as a page of its own.
+Everything below is included by the extension as this page is built, from sample files kept beside these pages in `_examples/`.
+The leading underscore keeps Quarto from rendering them as pages of their own.
+The last two sections print their call instead of running it, for the reasons given there.
 
-The sample is a small standalone document:
+The main sample is a small standalone document:
 
 ````markdown
 ---
@@ -43,8 +44,8 @@ A second top-level section, so an example can shift a heading of its own.
 A subsection, so a shift has something to nest.
 ````
 
-Each example below pulls a different part of it.
-No two of them overlap, so no identifier from the sample reaches this page twice.
+The first examples pull different parts of it, and the later ones use further files in the same directory.
+No two of them overlap, so no identifier reaches this page twice.
 
 ## One section
 
@@ -139,6 +140,136 @@ The sample starts at level one, so `shift=2` is here as well, to keep its headin
 
 The `{{{< meta title >}}}` in that file comes out as text.
 Had the same content been in a `.qmd` file, Quarto would have run it and printed this page's title instead.
+
+## The whole file
+
+Leave the fragment off, and the whole file comes across.
+
+`_examples/standalone.qmd` is a second sample.
+It holds YAML front matter, a level one heading, and a level two heading under it.
+
+```markdown
+{{{< external _examples/standalone.qmd shift-heading-level-by=2 >}}}
+```
+
+::: {.border .rounded .p-3}
+
+{{< external _examples/standalone.qmd shift-heading-level-by=2 >}}
+
+:::
+
+`shift-heading-level-by` is the full name of the attribute the earlier examples wrote as `shift`.
+Both names reach the same code, and [Attributes](reference.qmd#attributes) gives the pair.
+
+The front matter of that file reaches the parser, and the parser does not turn it into content, so none of it appears above.
+
+## One line
+
+A fragment can name a single line as well as a range.
+
+```markdown
+{{{< external _examples/sample.qmd#L8 >}}}
+```
+
+::: {.border .rounded .p-3}
+
+{{< external _examples/sample.qmd#L8 >}}
+
+:::
+
+Line 8 of the sample is the paragraph under its first heading.
+[Fragments](reference.qmd#fragments) lists this form beside the range form.
+
+## Promoting headings
+
+A negative value promotes instead of demoting.
+`#nested-note` in `_examples/levels.qmd` is a level four heading, so `shift-heading-level-by=-1` lifts it to level three.
+
+```markdown
+{{{< external _examples/levels.qmd#nested-note shift-heading-level-by=-1 >}}}
+```
+
+::: {.border .rounded .p-3}
+
+{{< external _examples/levels.qmd#nested-note shift-heading-level-by=-1 >}}
+
+:::
+
+## Past level one
+
+A heading cannot rise above level one.
+`#top-note` in `_examples/levels.qmd` is a level one heading with a level two heading under it, and `shift-heading-level-by=-2` puts both past that limit.
+
+```markdown
+{{{< external _examples/levels.qmd#top-note shift-heading-level-by=-2 >}}}
+```
+
+::: {.border .rounded .p-3}
+
+{{< external _examples/levels.qmd#top-note shift-heading-level-by=-2 >}}
+
+:::
+
+Each one arrives as a bold paragraph, as [Shifting headings](reference.qmd#shifting-headings) says it will.
+A bold paragraph carries no identifier, so neither `#top-note` nor `#under-top-note` reaches this page.
+
+## Paths inside the file
+
+The extension moves heading levels, strips indentation from code blocks, and escapes the shortcodes in a `.md` file.
+It touches no link and no image, so a path arrives exactly as the file wrote it.
+
+`_examples/nested/note.md` sits one directory below this page, and its link names `reference.qmd`.
+
+```markdown
+{{{< external _examples/nested/note.md >}}}
+```
+
+::: {.border .rounded .p-3}
+
+{{< external _examples/nested/note.md >}}
+
+:::
+
+The link works because it is written as this page would write it, not as the file's own directory would.
+Write every path in a file meant for inclusion the way the including page needs it.
+
+## When the target is missing
+
+The two calls below are printed rather than run.
+One of them would stop this render, and the other would put an error in it.
+
+A file that cannot be read stops the render:
+
+```markdown
+{{{< external _examples/absent.qmd >}}}
+```
+
+Quarto reports `File '_examples/absent.qmd' not found in resource path`, and no page is produced.
+Check the path before you commit the call.
+
+A fragment that matches nothing is milder, and leaves the rest of the page alone:
+
+```markdown
+{{{< external _examples/sample.qmd#absent-section >}}}
+```
+
+The extension names the identifier it could not find, includes nothing, and the render finishes.
+A line range that starts past the end of the file behaves the same way.
+[Validation](reference.qmd#validation) lists each check.
+
+## A URL
+
+The first argument can be a URL, and the file is fetched while the document renders.
+
+```markdown
+{{{< external https://raw.githubusercontent.com/mcanouil/quarto-external/main/example.qmd >}}}
+```
+
+That call is printed rather than run, on purpose.
+A rendered one would make this site's own build wait on a network request.
+A target that moves or disappears then stops the build, as a missing local file does.
+Version the file with the project when you can.
+See [Caching](reference.qmd#caching) for what several calls on one URI cost.
 
 ## Source
 
