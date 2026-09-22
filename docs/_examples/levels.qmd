@@ -1,0 +1,27 @@
+---
+title: "A third standalone document"
+---
+
+# Top note {#top-note}
+
+A section at level one, so an example can push a heading past level one.
+
+## Under the top note {#under-top-note}
+
+A subsection, so one shift reaches two headings.
+
+# Deep note {#deep-note}
+
+A second top-level section, holding a heading deep enough to promote.
+
+## Second level {#second-level}
+
+A level two heading on the way down.
+
+### Third level {#third-level}
+
+A level three heading on the way down.
+
+#### Nested note {#nested-note}
+
+A level four heading, so an example can promote it to level three.
