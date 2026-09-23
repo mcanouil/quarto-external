@@ -9,7 +9,7 @@
 ### Documentation
 
 - docs: Serve the extension's social card as the Open Graph image, so a shared link shows the card rather than the first image on the page. (#55)
-- docs: Add worked examples for a whole-file include, a single line, a promoted heading, a heading pushed past level one, a path written inside the included file, a missing target, and a URL.
+- docs: Add worked examples for a whole-file include, a single line, a promoted heading, a heading pushed past level one, a path written inside the included file, a missing target, and a URL. (#59)
 
 ### Refactoring
 
