@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.8.2 (2026-09-23)
+
 ### Bug Fixes
 
 - fix: Report a key nested inside an option as a warning rather than an error, so one nested typo does not invalidate the whole configuration. This matches how the extension already reports an unknown key at the top of its own block. (#58)
