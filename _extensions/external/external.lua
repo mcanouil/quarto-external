@@ -227,8 +227,8 @@ local function dedent_text(text)
 end
 
 --- Walk blocks and dedent every CodeBlock's text (returns new block list).
---- Uses `pandoc.walk_block` on a wrapping Div so nested CodeBlocks (in
---- BlockQuotes, Divs, etc.) are also dedented.
+--- Walks a wrapping Div with `Div:walk`, which Quarto 1 and Quarto 2 both
+--- support, so nested CodeBlocks (in BlockQuotes, Divs, etc.) are also dedented.
 --- @param blocks table<integer, table> Pandoc blocks to process
 --- @return table<integer, table> Blocks with code dedented
 local function dedent_code_blocks(blocks)
@@ -236,7 +236,7 @@ local function dedent_code_blocks(blocks)
     return {}
   end
   --- @type table Walked wrapper Div with dedented CodeBlocks inside.
-  local walked = pandoc.walk_block(pandoc.Div(blocks), {
+  local walked = pandoc.Div(blocks):walk({
     CodeBlock = function(cb)
       cb.text = dedent_text(cb.text)
       return cb
