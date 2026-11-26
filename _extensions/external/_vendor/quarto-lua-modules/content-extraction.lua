@@ -149,7 +149,7 @@ function M.extract_div(blocks, div_id, include_div)
   local should_include_div = include_div or false
   local found_div = nil
 
-  pandoc.walk_block(pandoc.Div(blocks), {
+  pandoc.Div(blocks):walk({
     Div = function(div)
       if div.identifier == div_id and found_div == nil then
         found_div = div
